@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  other: {
+    "juicyads-site-verification": "498a1d4c40e3a2adeb184d6a8f228f71",
+  },
 };
 
 export default function RootLayout({

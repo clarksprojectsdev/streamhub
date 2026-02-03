@@ -32,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="juicyads-site-verification" content="498a1d4c40e3a2adeb184d6a8f228f71" />
+      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Analytics />
         <AgeGate>

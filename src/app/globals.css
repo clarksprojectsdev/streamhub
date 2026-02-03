@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: #0f0f12;
+  --surface-elevated: #18181c;
+  --accent: #e11d48;
+  --accent-hover: #f43f5e;
+  --muted: #71717a;
+  --foreground: #fafafa;
+  --foreground-muted: #a1a1aa;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--surface);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

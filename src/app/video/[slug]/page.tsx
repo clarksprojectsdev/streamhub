@@ -34,6 +34,9 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
   const relatedVideos = featuredVideos.filter((v) => v.id !== video.id).slice(0, 6);
   const affiliateUrl = getAffiliateUrl(video.slug);
+  const adsterraGateUrl =
+    process.env.NEXT_PUBLIC_ADSTERRA_GATE_URL ??
+    "https://www.effectivegatecpm.com/kk41qkf0ax?key=4e25a83ed814eba20db141501776e30b";
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -63,6 +66,19 @@ export default async function VideoPage({ params }: VideoPageProps) {
               />
             </div>
           </div>
+
+          {adsterraGateUrl && (
+            <div className="mt-4 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center">
+              <a
+                href={adsterraGateUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+              >
+                Sponsored
+              </a>
+            </div>
+          )}
 
           <div className="mt-6">
             <h1 className="text-2xl font-bold text-white sm:text-3xl">

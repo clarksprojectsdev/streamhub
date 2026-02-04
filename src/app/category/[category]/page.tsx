@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const base = getBaseUrl();
   return {
     title: `${category.name} Videos`,
-    description: `Browse ${category.name} videos. All content is provided by third-party affiliate partners. Placeholder listings only.`,
+    description: `Browse ${category.name} videos. All content is provided by third-party affiliate partners.`,
     alternates: { canonical: `${base}/category/${categorySlug}` },
     openGraph: {
       title: `${category.name} Videos`,
@@ -70,8 +70,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </h1>
         <p className="mt-2 text-zinc-400">
           Browse {category.name.toLowerCase()} videos below. This site does not host or produce
-          content; all videos are linked from third-party affiliate partners. Placeholder
-          listings only.
+          content; all videos are linked from third-party affiliate partners.
         </p>
       </section>
 

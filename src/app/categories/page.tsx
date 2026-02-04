@@ -5,7 +5,7 @@ import CategoryCard from "@/components/CategoryCard";
 
 export const metadata: Metadata = {
   title: "Categories",
-  description: "Browse streaming content by category. Placeholder adult affiliate site.",
+  description: "Browse streaming content by category. StreamHub adult affiliate site.",
   alternates: { canonical: `${getBaseUrl()}/categories` },
 };
 
@@ -17,7 +17,7 @@ export default function CategoriesPage() {
           Categories
         </h1>
         <p className="mt-2 text-muted">
-          Explore content by category. All thumbnails and titles are placeholders.
+          Explore content by category. Videos are provided by third-party partners.
         </p>
       </section>
 

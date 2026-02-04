@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }: HomePageProps): Promise
   const canonical = page <= 1 ? base : `${base}/?page=${page}`;
   return {
     title: "Home",
-    description: "Browse featured and popular streaming videos. Placeholder adult affiliate site.",
+    description: "Browse featured and popular streaming videos. StreamHub adult affiliate streaming.",
     alternates: { canonical },
   };
 }
@@ -46,7 +46,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           Featured Videos
         </h1>
         <p className="mt-2 text-zinc-400">
-          Hand-picked placeholder content. No real adult material.
+          Browse thousands of videos. All content is provided by third-party partners.
         </p>
       </section>
 

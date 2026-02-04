@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const SITE_NAME = "Site Name Placeholder";
+const SITE_NAME = "StreamHub";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

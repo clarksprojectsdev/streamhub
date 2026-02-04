@@ -2,11 +2,18 @@ import Link from "next/link";
 import Image from "next/image";
 import type { VideoItem } from "@/lib/data";
 
+function isValidImageUrl(s: string | undefined): boolean {
+  return Boolean(s && (s.startsWith("http://") || s.startsWith("https://")));
+}
+
+const PLACEHOLDER_THUMB = "https://picsum.photos/640/360?random=placeholder";
+
 interface VideoCardProps {
   video: VideoItem;
 }
 
 export default function VideoCard({ video }: VideoCardProps) {
+  const thumbSrc = isValidImageUrl(video.thumbnail) ? video.thumbnail : PLACEHOLDER_THUMB;
   return (
     <Link
       href={`/video/${video.slug}`}
@@ -16,7 +23,7 @@ export default function VideoCard({ video }: VideoCardProps) {
       <article>
         <div className="relative aspect-video bg-zinc-800">
           <Image
-            src={video.thumbnail}
+            src={thumbSrc}
             alt=""
             fill
             className="object-cover transition duration-200 group-hover:brightness-110 group-hover:scale-105"

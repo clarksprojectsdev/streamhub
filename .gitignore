@@ -26,6 +26,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# XVideos CSV (large; use scripts/import-xvideos-csv.js to generate src/data/videos.json)
+xvideos*.csv
+
 # vercel
 .vercel
 

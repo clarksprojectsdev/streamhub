@@ -1,3 +1,5 @@
+import xvideosJson from "@/data/videos.json";
+
 export interface VideoItem {
   id: string;
   slug: string;
@@ -21,7 +23,7 @@ export interface CategoryItem {
   videoCount: string;
 }
 
-export const categories: CategoryItem[] = [
+const STATIC_CATEGORIES: CategoryItem[] = [
   { id: "1", slug: "featured", name: "Featured", thumbnail: "https://picsum.photos/400/225?random=1", videoCount: "120" },
   { id: "2", slug: "popular", name: "Popular", thumbnail: "https://picsum.photos/400/225?random=2", videoCount: "340" },
   { id: "3", slug: "new-releases", name: "New Releases", thumbnail: "https://picsum.photos/400/225?random=3", videoCount: "89" },
@@ -33,7 +35,7 @@ export const categories: CategoryItem[] = [
 const PLACEHOLDER_EMBED = "https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0";
 const PLACEHOLDER_AFFILIATE = "https://example.com/affiliate";
 
-export const featuredVideos: VideoItem[] = [
+const PLACEHOLDER_VIDEOS: VideoItem[] = [
   { id: "1", slug: "sample-video-1", title: "Sample Video Title One", description: "Placeholder preview for sample video one. Full-length content available via the watch button. No real adult material.", thumbnail: "https://picsum.photos/640/360?random=10", duration: "12:34", views: "125K", category: "Featured", embedUrl: PLACEHOLDER_EMBED, affiliateUrl: `${PLACEHOLDER_AFFILIATE}/1` },
   { id: "2", slug: "sample-video-2", title: "Sample Video Title Two", description: "Placeholder preview for sample video two. Watch the full video on our partner site. Placeholder only.", thumbnail: "https://picsum.photos/640/360?random=11", duration: "08:21", views: "98K", category: "Popular", embedUrl: PLACEHOLDER_EMBED, affiliateUrl: `${PLACEHOLDER_AFFILIATE}/2` },
   { id: "3", slug: "sample-video-3", title: "Sample Video Title Three", description: "Placeholder preview for sample video three. Click below to view full content externally. No real content.", thumbnail: "https://picsum.photos/640/360?random=12", duration: "15:00", views: "210K", category: "New Releases", embedUrl: PLACEHOLDER_EMBED, affiliateUrl: `${PLACEHOLDER_AFFILIATE}/3` },
@@ -42,6 +44,41 @@ export const featuredVideos: VideoItem[] = [
   { id: "6", slug: "sample-video-6", title: "Sample Video Title Six", description: "Placeholder preview for sample video six. Full-length content via affiliate link. Placeholder only.", thumbnail: "https://picsum.photos/640/360?random=15", duration: "09:33", views: "89K", category: "Featured", embedUrl: PLACEHOLDER_EMBED, affiliateUrl: `${PLACEHOLDER_AFFILIATE}/6` },
 ];
 
+const xvideosVideos = xvideosJson as VideoItem[];
+export const featuredVideos: VideoItem[] =
+  Array.isArray(xvideosVideos) && xvideosVideos.length > 0 ? xvideosVideos : PLACEHOLDER_VIDEOS;
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    || "uncategorized";
+}
+
+function deriveCategoriesFromVideos(videos: VideoItem[]): CategoryItem[] {
+  const bySlug = new Map<string, { name: string; count: number; thumb: string }>();
+  for (const v of videos) {
+    const slug = slugify(v.category);
+    const cur = bySlug.get(slug);
+    if (!cur) bySlug.set(slug, { name: v.category, count: 1, thumb: v.thumbnail });
+    else cur.count += 1;
+  }
+  return Array.from(bySlug.entries()).map(([slug, { name, count, thumb }], i) => ({
+    id: String(i + 1),
+    slug,
+    name,
+    thumbnail: thumb,
+    videoCount: String(count),
+  }));
+}
+
+export const categories: CategoryItem[] =
+  Array.isArray(xvideosVideos) && xvideosVideos.length > 0
+    ? deriveCategoriesFromVideos(featuredVideos)
+    : STATIC_CATEGORIES;
+
 export function getVideoBySlug(slug: string): VideoItem | undefined {
   return featuredVideos.find((v) => v.slug === slug);
 }
@@ -49,5 +86,5 @@ export function getVideoBySlug(slug: string): VideoItem | undefined {
 export function getVideosByCategory(categorySlug: string): VideoItem[] {
   const cat = categories.find((c) => c.slug === categorySlug);
   if (!cat) return featuredVideos;
-  return featuredVideos.filter((v) => v.category.toLowerCase() === cat.name.toLowerCase());
+  return featuredVideos.filter((v) => slugify(v.category) === categorySlug);
 }

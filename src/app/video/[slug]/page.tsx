@@ -10,11 +10,18 @@ interface VideoPageProps {
   params: Promise<{ slug: string }>;
 }
 
+function isValidImageUrl(s: string | undefined): boolean {
+  return Boolean(s && (s.startsWith("http://") || s.startsWith("https://")));
+}
+
 export async function generateMetadata({ params }: VideoPageProps) {
   const { slug } = await params;
   const video = getVideoBySlug(slug);
   if (!video) return { title: "Video" };
   const base = getBaseUrl();
+  const ogImage = isValidImageUrl(video.thumbnail)
+    ? [{ url: video.thumbnail, width: 640, height: 360, alt: video.title }]
+    : undefined;
   return {
     title: video.title,
     description: video.description,
@@ -22,7 +29,7 @@ export async function generateMetadata({ params }: VideoPageProps) {
     openGraph: {
       title: video.title,
       description: video.description,
-      images: [{ url: video.thumbnail, width: 640, height: 360, alt: video.title }],
+      ...(ogImage && { images: ogImage }),
     },
   };
 }

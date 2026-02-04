@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import:xvideos": "node scripts/import-xvideos-csv.js"
   },
   "dependencies": {
     "next": "^16.1.6",

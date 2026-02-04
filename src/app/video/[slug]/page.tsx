@@ -5,6 +5,7 @@ import { getAffiliateUrl, AFFILIATE_LINK_REL } from "@/lib/affiliate";
 import { getBaseUrl } from "@/lib/site";
 import VideoCard from "@/components/VideoCard";
 import TrackedAffiliateLink from "@/components/TrackedAffiliateLink";
+import JuicyAdsAd from "@/components/JuicyAdsAd";
 
 interface VideoPageProps {
   params: Promise<{ slug: string }>;
@@ -41,9 +42,7 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
   const relatedVideos = featuredVideos.filter((v) => v.id !== video.id).slice(0, 6);
   const affiliateUrl = getAffiliateUrl(video.slug);
-  const adsterraGateUrl =
-    process.env.NEXT_PUBLIC_ADSTERRA_GATE_URL ??
-    "https://www.effectivegatecpm.com/kk41qkf0ax?key=4e25a83ed814eba20db141501776e30b";
+  const adsterraGateUrl = process.env.NEXT_PUBLIC_ADSTERRA_GATE_URL?.trim() || undefined;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -111,6 +110,9 @@ export default async function VideoPage({ params }: VideoPageProps) {
         </article>
 
         <aside>
+          <div className="mb-6 flex justify-center">
+            <JuicyAdsAd />
+          </div>
           <h2 className="mb-4 text-lg font-semibold text-white">
             Related Videos
           </h2>

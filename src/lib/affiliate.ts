@@ -23,6 +23,9 @@ export const AFFILIATE_SUBID_PARAM = "subid";
 /** Recommended rel for external affiliate links. */
 export const AFFILIATE_LINK_REL = "nofollow noopener noreferrer" as const;
 
+/** Optional Brazzers affiliate URL. When set, main CTA rotates 50/50 with Chaturbate (by slug hash). */
+const BRAZZERS_AFFILIATE_URL = (process.env.NEXT_PUBLIC_BRAZZERS_AFFILIATE_URL ?? "").trim() || undefined;
+
 /**
  * Chaturbate affiliate links (Revshare program)
  */
@@ -36,11 +39,27 @@ export const CHATURBATE_LINKS = {
 } as const;
 
 /**
- * Builds the outbound affiliate URL for a video: base URL + subid (slug) + optional campaign/source.
+ * Builds the outbound affiliate URL for a video. When Brazzers URL is set, rotates 50/50 with
+ * Chaturbate by slug hash (same video always gets same program). Otherwise uses base URL only.
  * @param slug - Video slug (e.g. from route or video.slug)
  * @returns Full affiliate URL with subid and any optional params
  */
 export function getAffiliateUrl(slug: string): string {
+  if (!BRAZZERS_AFFILIATE_URL) {
+    const url = new URL(AFFILIATE_BASE_URL);
+    url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
+    if (AFFILIATE_CAMPAIGN) url.searchParams.set("campaign", AFFILIATE_CAMPAIGN);
+    if (AFFILIATE_SOURCE) url.searchParams.set("source", AFFILIATE_SOURCE);
+    if (AFFILIATE_MEDIUM) url.searchParams.set("medium", AFFILIATE_MEDIUM);
+    return url.toString();
+  }
+  const hash = slug.split("").reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) | 0, 0);
+  const useBrazzers = Math.abs(hash) % 2 === 1;
+  if (useBrazzers) {
+    const url = new URL(BRAZZERS_AFFILIATE_URL);
+    url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
+    return url.toString();
+  }
   const url = new URL(AFFILIATE_BASE_URL);
   url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
   if (AFFILIATE_CAMPAIGN) url.searchParams.set("campaign", AFFILIATE_CAMPAIGN);

@@ -24,6 +24,18 @@ export const AFFILIATE_SUBID_PARAM = "subid";
 export const AFFILIATE_LINK_REL = "nofollow noopener noreferrer" as const;
 
 /**
+ * Chaturbate affiliate links (Revshare program)
+ */
+export const CHATURBATE_LINKS = {
+  /** General homepage - best for tube site traffic */
+  HOME_PAGE: "https://chaturbate.com/in/?tour=grq0&campaign=0roTN&track=default",
+  /** Direct signup focus */
+  JOIN_PAGE: "https://chaturbate.com/in/?tour=3Mc9&campaign=0roTN&track=default&redirect_to_room=-welcomepage-",
+  /** Female-focused traffic */
+  HOME_PAGE_FEMALES: "https://chaturbate.com/in/?tour=IsSO&campaign=0roTN&track=default",
+} as const;
+
+/**
  * Builds the outbound affiliate URL for a video: base URL + subid (slug) + optional campaign/source.
  * @param slug - Video slug (e.g. from route or video.slug)
  * @returns Full affiliate URL with subid and any optional params
@@ -34,5 +46,17 @@ export function getAffiliateUrl(slug: string): string {
   if (AFFILIATE_CAMPAIGN) url.searchParams.set("campaign", AFFILIATE_CAMPAIGN);
   if (AFFILIATE_SOURCE) url.searchParams.set("source", AFFILIATE_SOURCE);
   if (AFFILIATE_MEDIUM) url.searchParams.set("medium", AFFILIATE_MEDIUM);
+  return url.toString();
+}
+
+/**
+ * Builds a Chaturbate affiliate URL with subid tracking.
+ * @param baseUrl - Chaturbate affiliate link
+ * @param slug - Video slug for tracking
+ * @returns Full Chaturbate affiliate URL with subid
+ */
+export function getChaturbateUrl(baseUrl: string, slug: string): string {
+  const url = new URL(baseUrl);
+  url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
   return url.toString();
 }

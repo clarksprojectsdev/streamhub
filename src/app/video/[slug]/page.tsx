@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getVideoBySlug, featuredVideos } from "@/lib/data";
-import { getAffiliateUrl, AFFILIATE_LINK_REL } from "@/lib/affiliate";
+import {
+  getAffiliateUrl,
+  getChaturbateUrl,
+  AFFILIATE_LINK_REL,
+  CHATURBATE_LINKS,
+} from "@/lib/affiliate";
 import { getBaseUrl } from "@/lib/site";
 import VideoCard from "@/components/VideoCard";
 import TrackedAffiliateLink from "@/components/TrackedAffiliateLink";
@@ -106,6 +111,26 @@ export default async function VideoPage({ params }: VideoPageProps) {
             >
               Watch Full Video
             </TrackedAffiliateLink>
+
+            {/* Additional Chaturbate Links */}
+            <div className="mt-4 flex flex-wrap gap-3">
+              <TrackedAffiliateLink
+                href={getChaturbateUrl(CHATURBATE_LINKS.JOIN_PAGE, video.slug)}
+                videoSlug={video.slug}
+                rel={AFFILIATE_LINK_REL}
+                className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                Join Live Cams
+              </TrackedAffiliateLink>
+              <TrackedAffiliateLink
+                href={getChaturbateUrl(CHATURBATE_LINKS.HOME_PAGE_FEMALES, video.slug)}
+                videoSlug={video.slug}
+                rel={AFFILIATE_LINK_REL}
+                className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                Female Cams
+              </TrackedAffiliateLink>
+            </div>
           </div>
         </article>
 

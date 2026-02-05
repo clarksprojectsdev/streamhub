@@ -10,20 +10,27 @@ export default function SearchBar() {
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Query that the in-flight fetch is for; used to ignore stale responses. */
+  const fetchForQueryRef = useRef<string | null>(null);
 
   const fetchResults = useCallback(async (q: string) => {
     if (!q.trim()) {
       setResults([]);
       return;
     }
+    const trimmed = q.trim();
+    fetchForQueryRef.current = trimmed;
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`);
       const data = await res.json();
+      if (fetchForQueryRef.current !== trimmed) return;
       setResults(Array.isArray(data) ? data : []);
     } catch {
+      if (fetchForQueryRef.current !== trimmed) return;
       setResults([]);
     } finally {
+      if (fetchForQueryRef.current !== trimmed) return;
       setLoading(false);
     }
   }, []);

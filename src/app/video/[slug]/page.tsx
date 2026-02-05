@@ -132,6 +132,26 @@ export default async function VideoPage({ params }: VideoPageProps) {
               >
                 Female Cams
               </TrackedAffiliateLink>
+            </div>
+
+            {/* Lovense banner */}
+            <TrackedAffiliateLink
+              href={getLovenseUrl(LOVENSE_STORE_URL, video.slug)}
+              videoSlug={video.slug}
+              rel={AFFILIATE_LINK_REL}
+              className="mt-4 block"
+            >
+              <img
+                width={1200}
+                height={630}
+                alt="Lovense"
+                src="https://cdn.lovense.com/UploadFiles/web/affiliateMaterials/20260128/bbc8bd9fb2854160bca1e8474b94ffce.jpg"
+                className="w-full h-auto max-w-full rounded-lg border-0"
+              />
+            </TrackedAffiliateLink>
+
+            {/* Shop Lovense button */}
+            <div className="mt-3">
               <TrackedAffiliateLink
                 href={getLovenseUrl(LOVENSE_STORE_URL, video.slug)}
                 videoSlug={video.slug}

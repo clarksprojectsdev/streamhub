@@ -27,6 +27,13 @@ export const AFFILIATE_LINK_REL = "nofollow noopener noreferrer" as const;
 const BRAZZERS_AFFILIATE_URL = (process.env.NEXT_PUBLIC_BRAZZERS_AFFILIATE_URL ?? "").trim() || undefined;
 
 /**
+ * Lovense affiliate (adult toys store). Override with NEXT_PUBLIC_LOVENSE_AFFILIATE_URL in .env.local.
+ * @see https://www.lovense.com/affiliate/become-an-affiliate
+ */
+export const LOVENSE_STORE_URL =
+  (process.env.NEXT_PUBLIC_LOVENSE_AFFILIATE_URL ?? "https://www.lovense.com/r/g5oi41").trim();
+
+/**
  * Chaturbate affiliate links (Revshare program)
  */
 export const CHATURBATE_LINKS = {
@@ -77,5 +84,17 @@ export function getAffiliateUrl(slug: string): string {
 export function getChaturbateUrl(baseUrl: string, slug: string): string {
   const url = new URL(baseUrl);
   url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
+  return url.toString();
+}
+
+/**
+ * Builds a Lovense store affiliate URL with optional subid for tracking.
+ * @param baseUrl - Lovense referral link (e.g. https://www.lovense.com/r/g5oi41)
+ * @param slug - Video/page slug for tracking (optional)
+ * @returns Full Lovense URL with subid if slug provided
+ */
+export function getLovenseUrl(baseUrl: string, slug: string): string {
+  const url = new URL(baseUrl);
+  if (slug) url.searchParams.set(AFFILIATE_SUBID_PARAM, slug);
   return url.toString();
 }

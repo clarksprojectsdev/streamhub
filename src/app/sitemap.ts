@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getBaseUrl } from "@/lib/site";
-import { featuredVideos } from "@/lib/data";
-import { categories } from "@/lib/data";
+import { getFeaturedVideos, getCategories } from "@/lib/data";
 
 const VIDEOS_PER_PAGE = 12;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getBaseUrl();
+  const featuredVideos = getFeaturedVideos();
+  const categories = getCategories();
   const totalPages = Math.ceil(featuredVideos.length / VIDEOS_PER_PAGE) || 1;
 
   const urls: MetadataRoute.Sitemap = [

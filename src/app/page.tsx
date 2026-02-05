@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { featuredVideos } from "@/lib/data";
+import { getFeaturedVideos } from "@/lib/data";
 import VideoCard from "@/components/VideoCard";
 import { getBaseUrl } from "@/lib/site";
 
@@ -24,6 +24,7 @@ export async function generateMetadata({ searchParams }: HomePageProps): Promise
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
+  const featuredVideos = getFeaturedVideos();
   const pageParam = params?.page;
   const currentPage = Math.max(
     1,

@@ -1,4 +1,5 @@
-import xvideosJson from "@/data/videos.json";
+import path from "path";
+import fs from "fs";
 
 export interface VideoItem {
   id: string;
@@ -44,9 +45,36 @@ const PLACEHOLDER_VIDEOS: VideoItem[] = [
   { id: "6", slug: "sample-video-6", title: "Sample Video Title Six", description: "Placeholder preview for sample video six. Full-length content via affiliate link. Placeholder only.", thumbnail: "https://picsum.photos/640/360?random=15", duration: "09:33", views: "89K", category: "Featured", embedUrl: PLACEHOLDER_EMBED, affiliateUrl: `${PLACEHOLDER_AFFILIATE}/6` },
 ];
 
-const xvideosVideos = xvideosJson as VideoItem[];
-export const featuredVideos: VideoItem[] =
-  Array.isArray(xvideosVideos) && xvideosVideos.length > 0 ? xvideosVideos : PLACEHOLDER_VIDEOS;
+/** Cached video list – loaded once from disk to avoid parsing 7MB+ JSON on every request and in IDE. */
+let videosCache: VideoItem[] | null = null;
+
+/**
+ * Load videos from src/data/videos.json at runtime (server-only). No static import so the 7MB file
+ * is not parsed by TypeScript/IDE, which prevents Cursor from hanging.
+ */
+function loadVideos(): VideoItem[] {
+  if (videosCache) return videosCache;
+  try {
+    const p = path.join(process.cwd(), "src/data/videos.json");
+    if (fs.existsSync(p)) {
+      const raw = fs.readFileSync(p, "utf8");
+      const parsed = JSON.parse(raw) as unknown;
+      const arr = Array.isArray(parsed) ? parsed : [];
+      if (arr.length > 0) {
+        videosCache = arr as VideoItem[];
+        return videosCache;
+      }
+    }
+  } catch {
+    // fallback to placeholders
+  }
+  videosCache = PLACEHOLDER_VIDEOS;
+  return videosCache;
+}
+
+export function getFeaturedVideos(): VideoItem[] {
+  return loadVideos();
+}
 
 function slugify(s: string): string {
   return s
@@ -74,17 +102,19 @@ function deriveCategoriesFromVideos(videos: VideoItem[]): CategoryItem[] {
   }));
 }
 
-export const categories: CategoryItem[] =
-  Array.isArray(xvideosVideos) && xvideosVideos.length > 0
-    ? deriveCategoriesFromVideos(featuredVideos)
-    : STATIC_CATEGORIES;
+export function getCategories(): CategoryItem[] {
+  const videos = loadVideos();
+  return videos.length > 0 ? deriveCategoriesFromVideos(videos) : STATIC_CATEGORIES;
+}
 
 export function getVideoBySlug(slug: string): VideoItem | undefined {
-  return featuredVideos.find((v) => v.slug === slug);
+  return loadVideos().find((v) => v.slug === slug);
 }
 
 export function getVideosByCategory(categorySlug: string): VideoItem[] {
-  const cat = categories.find((c) => c.slug === categorySlug);
-  if (!cat) return featuredVideos;
-  return featuredVideos.filter((v) => slugify(v.category) === categorySlug);
+  const videos = loadVideos();
+  const cats = getCategories();
+  const cat = cats.find((c) => c.slug === categorySlug);
+  if (!cat) return videos;
+  return videos.filter((v) => slugify(v.category) === categorySlug);
 }

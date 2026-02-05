@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getVideoBySlug, featuredVideos } from "@/lib/data";
+import { getVideoBySlug, getFeaturedVideos } from "@/lib/data";
 import {
   getAffiliateUrl,
   getChaturbateUrl,
+  getLovenseUrl,
   AFFILIATE_LINK_REL,
   CHATURBATE_LINKS,
+  LOVENSE_STORE_URL,
 } from "@/lib/affiliate";
 import { getBaseUrl } from "@/lib/site";
 import VideoCard from "@/components/VideoCard";
@@ -45,7 +47,7 @@ export default async function VideoPage({ params }: VideoPageProps) {
   const video = getVideoBySlug(slug);
   if (!video) notFound();
 
-  const relatedVideos = featuredVideos.filter((v) => v.id !== video.id).slice(0, 6);
+  const relatedVideos = getFeaturedVideos().filter((v) => v.id !== video.id).slice(0, 6);
   const affiliateUrl = getAffiliateUrl(video.slug);
   const adsterraGateUrl = process.env.NEXT_PUBLIC_ADSTERRA_GATE_URL?.trim() || undefined;
 
@@ -129,6 +131,14 @@ export default async function VideoPage({ params }: VideoPageProps) {
                 className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 Female Cams
+              </TrackedAffiliateLink>
+              <TrackedAffiliateLink
+                href={getLovenseUrl(LOVENSE_STORE_URL, video.slug)}
+                videoSlug={video.slug}
+                rel={AFFILIATE_LINK_REL}
+                className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                Shop Lovense
               </TrackedAffiliateLink>
             </div>
           </div>

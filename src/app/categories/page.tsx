@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { categories } from "@/lib/data";
+import { getCategories } from "@/lib/data";
 import { getBaseUrl } from "@/lib/site";
 import CategoryCard from "@/components/CategoryCard";
 
@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function CategoriesPage() {
+  const categories = getCategories();
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <section className="mb-12">

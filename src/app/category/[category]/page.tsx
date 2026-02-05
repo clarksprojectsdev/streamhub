@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { categories, getVideosByCategory } from "@/lib/data";
+import { getCategories, getVideosByCategory } from "@/lib/data";
 import { getBaseUrl } from "@/lib/site";
 import VideoCard from "@/components/VideoCard";
 
@@ -10,7 +10,7 @@ interface CategoryPageProps {
 
 export async function generateMetadata({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params;
-  const category = categories.find(
+  const category = getCategories().find(
     (c) => c.slug === categorySlug
   );
   if (!category) return { title: "Category" };
@@ -28,12 +28,12 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 }
 
 export async function generateStaticParams() {
-  return categories.map((c) => ({ category: c.slug }));
+  return getCategories().map((c) => ({ category: c.slug }));
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category: categorySlug } = await params;
-  const category = categories.find((c) => c.slug === categorySlug);
+  const category = getCategories().find((c) => c.slug === categorySlug);
   if (!category) notFound();
 
   const videos = getVideosByCategory(categorySlug);

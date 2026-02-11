@@ -13,6 +13,12 @@ import { getBaseUrl } from "@/lib/site";
 import VideoCard from "@/components/VideoCard";
 import TrackedAffiliateLink from "@/components/TrackedAffiliateLink";
 import JuicyAdsAd from "@/components/JuicyAdsAd";
+import AdultForceAd from "@/components/AdultForceAd";
+import {
+  ADULTFORCE_PREROLL,
+  ADULTFORCE_300,
+  ADULTFORCE_728,
+} from "@/lib/adultforce";
 
 interface VideoPageProps {
   params: Promise<{ slug: string }>;
@@ -66,8 +72,17 @@ export default async function VideoPage({ params }: VideoPageProps) {
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <article className="lg:col-span-2">
-          {/* Responsive iframe embed */}
+        <article className="lg:col-span-2 space-y-4">
+          {/* Pre-roll ad (before video) */}
+          <AdultForceAd
+            src={ADULTFORCE_PREROLL}
+            width={1920}
+            height={1080}
+            title="Pre-roll advertisement"
+            responsive
+          />
+
+          {/* Video embed */}
           <div className="relative w-full overflow-hidden rounded-lg bg-black shadow-xl ring-1 ring-white/10">
             <div className="relative aspect-video">
               <iframe
@@ -78,6 +93,16 @@ export default async function VideoPage({ params }: VideoPageProps) {
                 className="absolute inset-0 h-full w-full"
               />
             </div>
+          </div>
+
+          {/* Below video banner (728×90) */}
+          <div className="flex justify-center">
+            <AdultForceAd
+              src={ADULTFORCE_728}
+              width={728}
+              height={90}
+              title="Below video advertisement"
+            />
           </div>
 
           {adsterraGateUrl && (
@@ -164,10 +189,17 @@ export default async function VideoPage({ params }: VideoPageProps) {
           </div>
         </article>
 
-        <aside>
-          <div className="mb-6 flex justify-center">
-            <JuicyAdsAd />
+        <aside className="space-y-6">
+          {/* NTVA: 300×250 next to video */}
+          <div className="flex justify-center">
+            <AdultForceAd
+              src={ADULTFORCE_300}
+              width={300}
+              height={250}
+              title="Sidebar advertisement"
+            />
           </div>
+          <JuicyAdsAd />
           <h2 className="mb-4 text-lg font-semibold text-white">
             Related Videos
           </h2>

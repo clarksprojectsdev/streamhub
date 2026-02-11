@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getFeaturedVideos } from "@/lib/data";
 import VideoCard from "@/components/VideoCard";
+import AdultForceAd from "@/components/AdultForceAd";
+import { ADULTFORCE_950 } from "@/lib/adultforce";
 import { getBaseUrl } from "@/lib/site";
 
 const VIDEOS_PER_PAGE = 12;
@@ -42,6 +44,17 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* Top header banner (950×250) - homepage only */}
+      <section aria-label="Featured advertisement" className="mb-8">
+        <AdultForceAd
+          src={ADULTFORCE_950}
+          width={950}
+          height={250}
+          title="Homepage banner advertisement"
+          responsive
+        />
+      </section>
+
       <section aria-labelledby="featured-heading">
         <h1 id="featured-heading" className="text-3xl font-bold text-white sm:text-4xl">
           Featured Videos

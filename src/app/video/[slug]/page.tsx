@@ -73,15 +73,6 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <article className="lg:col-span-2 space-y-4">
-          {/* Pre-roll ad (before video) */}
-          <AdultForceAd
-            src={ADULTFORCE_PREROLL}
-            width={1920}
-            height={1080}
-            title="Pre-roll advertisement"
-            responsive
-          />
-
           {/* Video embed */}
           <div className="relative w-full overflow-hidden rounded-lg bg-black shadow-xl ring-1 ring-white/10">
             <div className="relative aspect-video">
@@ -199,7 +190,9 @@ export default async function VideoPage({ params }: VideoPageProps) {
               title="Sidebar advertisement"
             />
           </div>
-          <JuicyAdsAd />
+          <div className="flex justify-center">
+            <JuicyAdsAd />
+          </div>
           <h2 className="mb-4 text-lg font-semibold text-white">
             Related Videos
           </h2>

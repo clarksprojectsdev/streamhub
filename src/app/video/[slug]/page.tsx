@@ -88,6 +88,7 @@ export default async function VideoPage({ params }: VideoPageProps) {
               <iframe
                 title={`Watch ${video.title}`}
                 src={video.embedUrl}
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 h-full w-full"

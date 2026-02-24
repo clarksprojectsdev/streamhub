@@ -73,6 +73,15 @@ export default async function VideoPage({ params }: VideoPageProps) {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <article className="lg:col-span-2 space-y-4">
+          {/* Pre-roll ad (before video) */}
+          <AdultForceAd
+            src={ADULTFORCE_PREROLL}
+            width={1920}
+            height={1080}
+            title="Pre-roll advertisement"
+            responsive
+          />
+
           {/* Video embed */}
           <div className="relative w-full overflow-hidden rounded-lg bg-black shadow-xl ring-1 ring-white/10">
             <div className="relative aspect-video">
@@ -162,6 +171,7 @@ export default async function VideoPage({ params }: VideoPageProps) {
                 height={630}
                 alt="Lovense"
                 src="https://cdn.lovense.com/UploadFiles/web/affiliateMaterials/20260128/bbc8bd9fb2854160bca1e8474b94ffce.jpg"
+                loading="lazy"
                 className="w-full h-auto max-w-full rounded-lg border-0"
               />
             </TrackedAffiliateLink>

@@ -14,7 +14,8 @@ declare global {
   }
 }
 
-const GA_ID = typeof window !== "undefined" ? process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID : undefined;
+const GA_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-Y3D5TCY246";
 
 export function trackPageView(path: string): void {
   if (typeof window === "undefined") return;

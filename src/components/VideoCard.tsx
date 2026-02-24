@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { VideoItem } from "@/lib/data";
 
 function isValidImageUrl(s: string | undefined): boolean {
@@ -21,13 +20,12 @@ export default function VideoCard({ video }: VideoCardProps) {
       aria-label={`Watch ${video.title}, ${video.views} views, ${video.duration}`}
     >
       <article>
-        <div className="relative aspect-video bg-zinc-800">
-          <Image
+        <div className="relative aspect-video bg-zinc-800 overflow-hidden">
+          <img
             src={thumbSrc}
             alt=""
-            fill
-            className="object-cover transition duration-200 group-hover:brightness-110 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition duration-200 group-hover:brightness-110 group-hover:scale-105"
           />
           <span className="absolute bottom-2 right-2 rounded bg-black/80 px-2 py-0.5 text-xs font-medium text-white">
             {video.duration}

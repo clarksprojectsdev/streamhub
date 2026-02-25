@@ -5,15 +5,16 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { trackPageView } from "@/lib/analytics";
 
-const GA_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-Y3D5TCY246";
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 
 export default function Analytics() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname) trackPageView(pathname);
+    if (GA_ID && pathname) trackPageView(pathname);
   }, [pathname]);
+
+  if (!GA_ID) return null;
 
   return (
     <>

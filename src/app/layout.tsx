@@ -5,6 +5,7 @@ import AgeGate from "@/components/AgeGate";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Analytics from "@/components/Analytics";
+import EmailCapturePopup from "@/components/EmailCapturePopup";
 import { getBaseUrl } from "@/lib/site";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -60,6 +61,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <EmailCapturePopup />
         </AgeGate>
       </body>
     </html>

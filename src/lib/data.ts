@@ -118,3 +118,66 @@ export function getVideosByCategory(categorySlug: string): VideoItem[] {
   if (!cat) return videos;
   return videos.filter((v) => slugify(v.category) === categorySlug);
 }
+
+/** Returns a page of videos for infinite scroll / API. */
+export function getVideosPage(
+  page: number,
+  limit: number
+): { videos: VideoItem[]; hasMore: boolean; total: number } {
+  const all = loadVideos();
+  const total = all.length;
+  const start = (page - 1) * limit;
+  const videos = all.slice(start, start + limit);
+  return { videos, hasMore: start + videos.length < total, total };
+}
+
+/** Trending: first N videos, optionally excluding one (e.g. current video). */
+export function getTrendingVideos(count: number, excludeId?: string): VideoItem[] {
+  const all = loadVideos();
+  const filtered = excludeId ? all.filter((v) => v.id !== excludeId) : all;
+  return filtered.slice(0, count);
+}
+
+const CATEGORY_STEP = 1301;
+
+/** Deterministic random category suggestions by seed (no layout shift). */
+export function getRandomCategories(seed: string, count: number): CategoryItem[] {
+  const cats = getCategories();
+  if (cats.length <= count) return cats;
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  const n = cats.length;
+  const seen = new Set<number>();
+  const result: CategoryItem[] = [];
+  for (let i = 0; result.length < count; i++) {
+    const idx = Math.abs((h + i * CATEGORY_STEP) | 0) % n;
+    if (seen.has(idx)) continue;
+    seen.add(idx);
+    result.push(cats[idx]);
+  }
+  return result;
+}
+
+/** Prime step to spread indices; avoids collisions for typical video counts. */
+const RELATED_STEP = 2341;
+
+/**
+ * Returns a deterministic subset of videos based on seed (e.g. blog slug).
+ * O(count) – no full shuffle, so it won't slow the site with large video lists.
+ */
+export function getRelatedVideos(seed: string, count: number): VideoItem[] {
+  const videos = loadVideos();
+  if (videos.length <= count) return videos.slice(0, count);
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  const n = videos.length;
+  const seen = new Set<number>();
+  const result: VideoItem[] = [];
+  for (let i = 0; result.length < count; i++) {
+    const idx = Math.abs((h + i * RELATED_STEP) | 0) % n;
+    if (seen.has(idx)) continue;
+    seen.add(idx);
+    result.push(videos[idx]);
+  }
+  return result;
+}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
+import NotifyBell from "@/components/NotifyBell";
 
 export default function Header() {
   return (
@@ -9,7 +10,8 @@ export default function Header() {
           <img src="/streamhub.png" alt="StreamHub" width={140} height={36} className="h-9 w-auto object-contain rounded-[8px]" />
         </Link>
         <SearchBar />
-        <nav className="flex items-center gap-6 shrink-0" aria-label="Main navigation">
+        <nav className="flex items-center gap-4 shrink-0" aria-label="Main navigation">
+          <NotifyBell />
           <Link
             href="/"
             className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
@@ -21,6 +23,12 @@ export default function Header() {
             className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
           >
             Categories
+          </Link>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+          >
+            Blog
           </Link>
         </nav>
       </div>

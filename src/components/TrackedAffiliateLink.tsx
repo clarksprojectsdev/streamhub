@@ -1,6 +1,6 @@
 "use client";
 
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, trackAffiliateClick } from "@/lib/analytics";
 
 interface TrackedAffiliateLinkProps {
   href: string;
@@ -8,6 +8,10 @@ interface TrackedAffiliateLinkProps {
   rel: string;
   className?: string;
   children: React.ReactNode;
+  /** Offer type for conversion tracking (chaturbate, dating, webcam) */
+  offerType?: string;
+  /** GEO/device context for analytics */
+  trackingExtras?: { country?: string; isMobile?: boolean };
 }
 
 export default function TrackedAffiliateLink({
@@ -16,14 +20,23 @@ export default function TrackedAffiliateLink({
   rel,
   className,
   children,
+  offerType,
+  trackingExtras,
 }: TrackedAffiliateLinkProps) {
+  const handleClick = () => {
+    if (offerType) {
+      trackAffiliateClick(videoSlug, offerType, trackingExtras);
+    } else {
+      trackCtaClick(videoSlug);
+    }
+  };
   return (
     <a
       href={href}
       target="_blank"
       rel={rel}
       className={className}
-      onClick={() => trackCtaClick(videoSlug)}
+      onClick={handleClick}
     >
       {children}
     </a>

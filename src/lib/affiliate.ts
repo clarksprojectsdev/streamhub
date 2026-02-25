@@ -180,7 +180,7 @@ export function getAffiliateUrlWithOffer(
   const useBrazzers = Math.abs(hash) % 2 === 1;
   return {
     url: buildUrlWithParams(useBrazzers ? BRAZZERS_AFFILIATE_URL : AFFILIATE_BASE_URL, slug),
-    offerType: "webcam",
+    offerType: useBrazzers ? "webcam" : "chaturbate",
   };
 }
 
